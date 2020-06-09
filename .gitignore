@@ -1,0 +1,9 @@
+*.DS_Store
+# Hide virtualenv
+venv/
+
+# Hide compiled python files
+*.pyc
+__pycache__/
+
+config.py
