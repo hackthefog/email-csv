@@ -11,9 +11,12 @@ with open('/' + dataFile) as csv_file:
     line_count = 0
     for row in csv_reader:
         if line_count != 0:
-            emails.append(row[3])
+            emails.append(row[2])
         line_count += 1
     print(f'Processed {line_count} lines.')
+
+for email in emails:
+    print(email)
 
 emailMessage = ('''
 Hello Hackers,
@@ -39,14 +42,45 @@ emailMessageHtml = ('''
 <p>We hope to see you there</p>
 <p>The Hack the Cloud Team</p>''')
 
+emailMessage1 = ('''
+Hello Hackers,
+
+We have a media release form that we need you to fill out: https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing
+
+Here are steps for filling this form out:
+
+1. Download the pdf from our link above
+2. Rename it to your fullname. Example (JohnDoe.pdf)
+3. Open it and type in your responses and get your parent to review (If you are under 18) in the fields. The form is writable so you should be able to edit it just by opening it.
+4. Last, save your changes and email it to raf@hackthefog.com with the subject "Attendee Form"
+
+Thank you!
+The Hack the Cloud Team''')
+
+emailMessageHtml1 = ('''
+<p>Hello Hackers,</p>
+
+<p>We have a media release form that we need you to fill out: <a href="https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing">https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing</a></p>
+
+<ol>
+  <li>Download the pdf from our link above</li>
+  <li>Rename it to your fullname. Example (JohnDoe.pdf)</li>
+  <li>Open it and type in your responses and get your parent to review (If you are under 18) in the fields. The form is writable so you should be able to edit it just by opening it.</li>
+  <li>Last, save your changes and email it to raf@hackthefog.com with the subject "Attendee Form"</li>
+</ol>
+
+<p>Thank you</p>
+<p>The Hack the Cloud Team</p>''')
+
+
 for recieverEmail in emails:
 
     msg = MIMEMultipart('alternative')
     msg['From'] = f'Hack the Cloud <{senderEmail}>'
     msg['To'] = recieverEmail
-    msg['Subject'] = f'Hack the Cloud'
-    part1 = MIMEText(emailMessage, 'plain')
-    part2 = MIMEText(emailMessageHtml, 'html')
+    msg['Subject'] = f'Hack the Cloud - Form'
+    part1 = MIMEText(emailMessage1, 'plain')
+    part2 = MIMEText(emailMessageHtml1, 'html')
     msg.attach(part1)
     msg.attach(part2)
     message = msg.as_string()
