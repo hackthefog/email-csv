@@ -9,9 +9,15 @@ with open('/' + dataFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
 
     line_count = 0
+    '''
     for row in csv_reader:
         if line_count != 0:
-            emails.append(row[2])
+            emails.append(row[3])
+        line_count += 1
+    '''
+    for row in csv_reader:
+        if line_count != 0 and row[0] == 'FALSE':
+            emails.append(row[3])
         line_count += 1
     print(f'Processed {line_count} lines.')
 
@@ -45,6 +51,8 @@ emailMessageHtml = ('''
 emailMessage1 = ('''
 Hello Hackers,
 
+You haven't filled out our form yet and you need it if you want to join our workshops it takes a couple minutes to fill out and send!
+
 We have a media release form that we need you to fill out: https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing
 
 Here are steps for filling this form out:
@@ -59,6 +67,8 @@ The Hack the Cloud Team''')
 
 emailMessageHtml1 = ('''
 <p>Hello Hackers,</p>
+
+<p>You haven't filled out our form yet and you need it if you want to join our workshops it takes a couple minutes to fill out and send!</p>
 
 <p>We have a media release form that we need you to fill out: <a href="https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing">https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing</a></p>
 
