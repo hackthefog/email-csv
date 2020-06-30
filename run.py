@@ -17,7 +17,7 @@ with open('/' + dataFile) as csv_file:
     '''
     for row in csv_reader:
         if line_count != 0 and row[0] == 'FALSE':
-            emails.append(row[3])
+            emails.append(row[4])
         line_count += 1
     print(f'Processed {line_count} lines.')
 
@@ -51,7 +51,7 @@ emailMessageHtml = ('''
 emailMessage1 = ('''
 Hello Hackers,
 
-You haven't filled out our form yet and you need it if you want to join our workshops it takes a couple minutes to fill out and send!
+You haven't filled out our form yet and you need it if you want to join our workshops it takes a couple minutes to fill out and send! If you don't plan on signing the form or want to stop recieving these emails just respond and let us know!
 
 We have a media release form that we need you to fill out: https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing
 
@@ -68,7 +68,7 @@ The Hack the Cloud Team''')
 emailMessageHtml1 = ('''
 <p>Hello Hackers,</p>
 
-<p>You haven't filled out our form yet and you need it if you want to join our workshops it takes a couple minutes to fill out and send!</p>
+<p>You haven't filled out our form yet and you need it if you want to join our workshops it takes a couple minutes to fill out and send! If you don't plan on signing the form or want to stop recieving these emails just respond and let us know!</p>
 
 <p>We have a media release form that we need you to fill out: <a href="https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing">https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing</a></p>
 
@@ -88,7 +88,7 @@ for recieverEmail in emails:
     msg = MIMEMultipart('alternative')
     msg['From'] = f'Hack the Cloud <{senderEmail}>'
     msg['To'] = recieverEmail
-    msg['Subject'] = f'Hack the Cloud - Form'
+    msg['Subject'] = 'Media Release Form - Hack the Cloud'
     part1 = MIMEText(emailMessage1, 'plain')
     part2 = MIMEText(emailMessageHtml1, 'html')
     msg.attach(part1)
