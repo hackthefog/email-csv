@@ -6,17 +6,18 @@ from email.mime.multipart import MIMEMultipart
 
 
 emails = []
-'''
+
 with open('/' + dataFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
 
     line_count = 0
     for row in csv_reader:
-        if line_count != 0 and row[0] == 'FALSE':
+        #if line_count != 0 and row[0] == 'FALSE':
+        if True:
             emails.append(row[4])
         line_count += 1
     print(f'Processed {line_count} lines.')
-'''
+
 for email in emails:
     print(email)
 
@@ -150,13 +151,16 @@ for recieverEmail in emails:
     msg.attach(part2)
     message = msg.as_string()
     
-    smtp_server = SMTP('smtp.gmail.com', 587)
-    smtp_server.ehlo_or_helo_if_needed()
-    smtp_server.starttls()
-    smtp_server.ehlo_or_helo_if_needed()
-    smtp_server.login(senderEmail, appPassword)
-    smtp_server.sendmail(senderEmail, recieverEmail, message)
-    smtp_server.quit()
+    try:
+        smtp_server = SMTP('smtp.gmail.com', 587)
+        smtp_server.ehlo_or_helo_if_needed()
+        smtp_server.starttls()
+        smtp_server.ehlo_or_helo_if_needed()
+        smtp_server.login(senderEmail, appPassword)
+        smtp_server.sendmail(senderEmail, recieverEmail, message)
+        smtp_server.quit()
+        print(f'Email sent to {recieverEmail}')
+    except Exception as e:
+        smtp_server.quit()
+        print(f'Email couldn\'t be sent to {recieverEmail}')
     
-
-    print(f'Email sent to {recieverEmail}')
