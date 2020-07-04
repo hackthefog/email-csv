@@ -4,23 +4,19 @@ from smtplib import SMTP
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+
 emails = []
+'''
 with open('/' + dataFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
 
     line_count = 0
-    '''
-    for row in csv_reader:
-        if line_count != 0:
-            emails.append(row[3])
-        line_count += 1
-    '''
     for row in csv_reader:
         if line_count != 0 and row[0] == 'FALSE':
             emails.append(row[4])
         line_count += 1
     print(f'Processed {line_count} lines.')
-
+'''
 for email in emails:
     print(email)
 
@@ -82,19 +78,78 @@ emailMessageHtml1 = ('''
 <p>Thank you</p>
 <p>The Hack the Cloud Team</p>''')
 
+emailMessage2 = ('''
+Hello Hack the Cloud Hackers,
+
+We hope that all is well during these tough times!
+
+As a reminder, the hackathon is being held on July 11th - 12th! We have attached an Attendee Packet (https://docs.google.com/document/u/3/d/e/2PACX-1vRQ5xsmrCuB6OdhmiLr1zN5EEn7LPAq40hP51hwkNJMdvJtjKPS1r8HplFizQaa0vKzUYc_ulY0AFQI/pub) so that you all will be prepared for the exciting day. We have amazing workshops planned for both Saturday and Sunday and we hope that you all will enjoy them. We have also been provided with lots of interesting tech resources from major tech companies that we hope you might find useful.
+
+If you haven’t already signed the waiver form (https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing), please do so before the event.
+
+Those of you who do not fill out a waiver will not be able to participate in the workshops on Zoom but are still able to participate in the hackathon after sending a picture of their current student ID to any of us for grade confirmation.
+
+Please complete this form (https://forms.gle/roB1jquATfrg37hM7) before the event as well, this is also where you can submit your waiver forms or student IDs.
+
+The event will be held on Zoom so be sure to have a Zoom account ready to sign on in. The Zoom call will be open on July 11th 9:00 AM Pacific Daylight Time. All Zoom meeting links will be available in the Attendee Packet.
+
+We also highly recommend having a Discord account and joining our Discord server https://discord.com/invite/evJ8fnG, especially if you don’t have a team. Important announcements and resources will be posted on the Discord server. There will also be a team matchmaking session near the beginning of the event.
+
+We want to clarify that only incoming freshmen, highschoolers, or graduating seniors will be eligible for prizes. For special cases, such as middle school students, please shoot us an email.
+
+If you have any questions feel free to email us at contact@hackthefog.com or ping us on Discord!
+
+We can’t wait to see what you make!
+
+Happy 4th of July,
+The Hack the Cloud Team
+https://cloud.hackthefog.com''')
+
+emailMessageHtml2 = ('''
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body>
+<p>Hello Hack the Cloud Hackers,</p>
+
+<p>We hope that all is well during these tough times!</p>
+
+<p>As a reminder, the hackathon is being held on <strong>July 11th - 12th!</strong> We have attached an <a target="_blank" href="https://docs.google.com/document/u/3/d/e/2PACX-1vRQ5xsmrCuB6OdhmiLr1zN5EEn7LPAq40hP51hwkNJMdvJtjKPS1r8HplFizQaa0vKzUYc_ulY0AFQI/pub">Attendee Packet</a> so that you all will be prepared for the exciting day. We have <strong>amazing workshops</strong> planned for both <strong>Saturday and Sunday</strong> and we hope that you all will enjoy them. We have also been provided with lots of interesting tech resources from major tech companies that we hope you might find useful.</p>
+
+<p>If you haven’t already signed the <a target="_blank" href="https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing">waiver form</a>, please do so before the event.</p>
+
+<p>Those of you who <strong>do not fill out a waiver</strong> will <strong>not</strong> be able to participate in the workshops on Zoom but are still able to participate in the hackathon after sending a <strong>picture of their current student ID</strong> to any of us for grade confirmation.</p>
+
+<p>Please complete <a target="_blank" href="https://forms.gle/roB1jquATfrg37hM7">this form</a> before the event as well, this is also where you can <strong>submit your waiver forms or student IDs</strong>.</p>
+
+<p>The event will be held on <strong>Zoom</strong> so be sure to have a <strong>Zoom account</strong> ready to sign on in. The Zoom call will be open on <strong>July 11th 9:00 AM Pacific Daylight Time.</strong> <strong>All Zoom meeting links</strong> will be available in the <strong>Attendee Packet</strong>.</p>
+
+<p>We also highly recommend having a <strong>Discord account</strong> and joining our <strong>Discord server</strong> <a target="_blank" href="https://discord.com/invite/evJ8fnG">here</a>, <i>especially if you don’t have a team</i>. <strong>Important announcements and resources</strong> will be posted on the Discord server. There will also be a <strong>team matchmaking session</strong> near the beginning of the event.</p>
+
+<p>We want to clarify that only incoming freshmen, highschoolers, or graduating seniors will be eligible for prizes. For special cases, such as middle school students, please shoot us an email.</p>
+
+<p>If you have any questions feel free to email us at <a target="_blank" href="mailto:contact@hackthefog.com">contact@hackthefog.com</a> or ping us on Discord!</p>
+
+<p>We can’t wait to see what you make!</p>
+
+<p>Happy 4th of July,</p>
+<p>The Hack the Cloud Team</p>
+<p><a href="https://cloud.hackthefog.com" target="_blank">https://cloud.hackthefog.com</a></p>
+</body></html>''')
+
 
 for recieverEmail in emails:
 
     msg = MIMEMultipart('alternative')
     msg['From'] = f'Hack the Cloud <{senderEmail}>'
     msg['To'] = recieverEmail
-    msg['Subject'] = 'Media Release Form - Hack the Cloud'
-    part1 = MIMEText(emailMessage1, 'plain')
-    part2 = MIMEText(emailMessageHtml1, 'html')
+    msg['Subject'] = 'One more week to Hack the Cloud'
+    part1 = MIMEText(emailMessage2, 'plain')
+    part2 = MIMEText(emailMessageHtml2, 'html')
     msg.attach(part1)
     msg.attach(part2)
     message = msg.as_string()
-
+    
     smtp_server = SMTP('smtp.gmail.com', 587)
     smtp_server.ehlo_or_helo_if_needed()
     smtp_server.starttls()
@@ -102,5 +157,6 @@ for recieverEmail in emails:
     smtp_server.login(senderEmail, appPassword)
     smtp_server.sendmail(senderEmail, recieverEmail, message)
     smtp_server.quit()
+    
 
     print(f'Email sent to {recieverEmail}')
