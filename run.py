@@ -3,6 +3,7 @@ from config import dataFile, appPassword, senderEmail
 from smtplib import SMTP
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from time import sleep as delay
 
 
 emails = []
@@ -138,15 +139,60 @@ emailMessageHtml2 = ('''
 <p><a href="https://cloud.hackthefog.com" target="_blank">https://cloud.hackthefog.com</a></p>
 </body></html>''')
 
+preEventMessage = ('''
+Hello Hackers,
+
+Hack the Cloud is tomorrow!
+
+Just as a reminder the opening ceremony will begin at 9:00 AM Pacific Daylight Time.
+
+If you haven’t already, please fill out the waiver form that we emailed you and check out the attendee packet that we sent with all of the important information about the hackathon. 
+
+Heres our event waiver:
+https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing
+
+Please submit that form or your ID to this form:
+https://forms.gle/roB1jquATfrg37hM7
+
+Here’s the link to the Attendee Packet:
+https://docs.google.com/document/u/1/d/e/2PACX-1vRQ5xsmrCuB6OdhmiLr1zN5EEn7LPAq40hP51hwkNJMdvJtjKPS1r8HplFizQaa0vKzUYc_ulY0AFQI/pub
+
+Last, here is our day of Discord:
+https://discord.gg/evJ8fnG
+
+Thanks, 
+Hack the Cloud Team
+https://cloud.hackthefog.com''')
+
+preEventMessageHTML = ('''
+<p>Hello Hackers,</p>
+
+<p>Hack the Cloud is tomorrow!</p>
+
+<p>Just as a reminder the opening ceremony will begin at <strong>9:00 AM Pacific Daylight Time</strong>.</p>
+
+<p>If you haven’t already, <strong>please fill out the waiver form</strong> that we emailed you and check out the attendee packet that we sent with all of the important information about the hackathon.</p>
+
+<p>Heres our <a href="https://drive.google.com/file/d/1KPIQuqX1b1mk7XqMSPq6DsLixDBvn77f/view?usp=sharing" target="_blank">event waiver</a>.</p>
+
+<p>Please submit that waiver or your ID to this <a href="https://forms.gle/roB1jquATfrg37hM7" target="_blank">form</a>.</p>
+
+<p>Here’s the link to the <a href="https://docs.google.com/document/u/1/d/e/2PACX-1vRQ5xsmrCuB6OdhmiLr1zN5EEn7LPAq40hP51hwkNJMdvJtjKPS1r8HplFizQaa0vKzUYc_ulY0AFQI/pub">Attendee Packets</a>.</p>
+
+<p>Last, here is our day of <a href="https://discord.gg/evJ8fnG" target="_blank">Discord</a>.</p>
+
+<p>Thanks,<br>Hack the Cloud Team</p>
+<p><a href="https://cloud.hackthefog.com" target="_blank">https://cloud.hackthefog.com</a></p>''')
+
 
 for recieverEmail in emails:
 
     msg = MIMEMultipart('alternative')
     msg['From'] = f'Hack the Cloud <{senderEmail}>'
     msg['To'] = recieverEmail
-    msg['Subject'] = 'One more week to Hack the Cloud'
-    part1 = MIMEText(emailMessage2, 'plain')
-    part2 = MIMEText(emailMessageHtml2, 'html')
+    msg['Subject'] = 'Hack the Cloud is Tomorrow!'
+    part1 = MIMEText(preEventMessage, 'plain')
+    part2 = MIMEText(preEventMessageHTML, 'html')
     msg.attach(part1)
     msg.attach(part2)
     message = msg.as_string()
@@ -163,4 +209,7 @@ for recieverEmail in emails:
     except Exception as e:
         smtp_server.quit()
         print(f'Email couldn\'t be sent to {recieverEmail}')
+
+    delay(5)
+
     
