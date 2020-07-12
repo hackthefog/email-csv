@@ -184,15 +184,43 @@ preEventMessageHTML = ('''
 <p>Thanks,<br>Hack the Cloud Team</p>
 <p><a href="https://cloud.hackthefog.com" target="_blank">https://cloud.hackthefog.com</a></p>''')
 
+reminderEventMessage = '''
+Hello,
+
+We hope your hacking is going well and we wanted to send this reminder before submissions are due later midnight Pacific Daylight Time.
+
+Make sure to fill out this form: https://forms.gle/roB1jquATfrg37hM7. If you don't do this we will ask one more time and if it isn't given you will not be eligible to win a prize.
+
+Another reminder is to please include something showing time, this can be a github link, folder with git, or just a folder or zip of your code that we can download from google drive.
+
+Projects that were started before Saturday July 11th are not eligible to be submit.
+
+Thanks,
+Hack the Cloud Team!
+'''
+reminderEventMessage = '''
+<p>Hello,</p>
+
+<p>We hope your hacking is going well and we wanted to send this reminder before submissions are due later midnight Pacific Daylight Time.</p>
+
+<p>Make sure to fill out this form: <a target="_blank" href="https://forms.gle/roB1jquATfrg37hM7">https://forms.gle/roB1jquATfrg37hM7</a>. If you don't do this we will ask one more time and if it isn't given you will not be eligible to win a prize.</p>
+
+<p>Another reminder is to please <strong>include something showing time, this can be a github link, folder with git, or just a folder or zip of your code that we can download from google drive.</strong></p>
+
+<p><strong>Projects that were started before Saturday July 11th are not eligible to be submit.</strong></p>
+
+<p>Thanks,<br>
+<p>Hack the Cloud Team!</p>
+'''
 
 for recieverEmail in emails:
 
     msg = MIMEMultipart('alternative')
     msg['From'] = f'Hack the Cloud <{senderEmail}>'
     msg['To'] = recieverEmail
-    msg['Subject'] = 'Hack the Cloud is Tomorrow!'
-    part1 = MIMEText(preEventMessage, 'plain')
-    part2 = MIMEText(preEventMessageHTML, 'html')
+    msg['Subject'] = 'Hack the Cloud submissions due soon!'
+    part1 = MIMEText(reminderEventMessage, 'plain')
+    part2 = MIMEText(reminderEventMessage, 'html')
     msg.attach(part1)
     msg.attach(part2)
     message = msg.as_string()
