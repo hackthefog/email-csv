@@ -5,9 +5,12 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from time import sleep as delay
 import numpy as np
+import os
+
+salt = os.environ.get('certkey')
 
 def keyHash(name, role, typ):
-    params = ['name', name, 'role', role, 'type', typ]
+    params = ['name', name, 'role', role, 'type', typ + salt]
 
     def hashParam(inp):
         inp = str(inp)
@@ -33,7 +36,7 @@ def keyHash(name, role, typ):
     return correctHash
 
 emails = []
-
+'''
 with open('/' + dataFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
 
@@ -44,7 +47,7 @@ with open('/' + dataFile) as csv_file:
             emails.append(row[4])
         line_count += 1
     print(f'Processed {line_count} lines.')
-
+'''
 for email in emails:
     print(email)
 
@@ -238,6 +241,7 @@ reminderEventMessage = '''
 <p>Thanks,<br>
 <p>Hack the Cloud Team!</p>
 '''
+
 hashed = keyHash('Cappillen Lee', 'Co-Director', 'HackTheCloud')
 created = f'https://certificate.hackthefog.com/?name=Cappillen Lee&role=Co-Director&type=HacktheCloud&key={hashed}'
 
@@ -248,7 +252,7 @@ for recieverEmail in emails:
     msg['To'] = recieverEmail
     msg['Subject'] = 'Hack the Cloud submissions due soon!'
     part1 = MIMEText(f'url: {created}', 'plain')
-    part2 = MIMEText(f'<p>url: {created}</p>', 'html')
+    part2 = MIMEText(f'<p>url: <a href="{created}">{created}</a></p>', 'html')
     msg.attach(part1)
     msg.attach(part2)
     message = msg.as_string()
