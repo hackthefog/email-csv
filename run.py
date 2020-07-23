@@ -35,7 +35,7 @@ def keyHash(name, role, typ):
     correctHash = hashParam(correctHash)
     return correctHash
 
-emails = []
+emails = ['cap@hackthefog.com', 'raf@hackthefog.com']
 '''
 with open('/' + dataFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -242,7 +242,7 @@ reminderEventMessage = '''
 <p>Hack the Cloud Team!</p>
 '''
 
-hashed = keyHash('Cappillen Lee', 'Co-Director', 'HackTheCloud')
+hashed = keyHash('Cappillen Lee', 'Co-Director', 'HacktheCloud' + salt)
 created = f'https://certificate.hackthefog.com/?name=Cappillen Lee&role=Co-Director&type=HacktheCloud&key={hashed}'
 
 for recieverEmail in emails:
