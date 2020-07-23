@@ -4,7 +4,33 @@ from smtplib import SMTP
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from time import sleep as delay
+import numpy as np
 
+def keyHash(name, role, typ):
+    params = ['name', name, 'role', role, 'type', typ]
+
+    def hashParam(inp):
+        inp = str(inp)
+        
+        output = 0
+
+        if len(inp) != 0:
+            for i in range(len(inp)):
+                char = ord(inp[i])
+                
+                output = np.int32((output << 5) - output + char)
+                # print(output)
+                output = (output & output)
+                # print(output)
+        return output
+
+    correctHash = 0
+    for i in range(0, len(params), 2):
+
+        correctHash += int(hashParam(params[i] + "|" + params[i + 1])) / len(params)
+
+    correctHash = hashParam(correctHash)
+    return correctHash
 
 emails = []
 
@@ -212,6 +238,8 @@ reminderEventMessage = '''
 <p>Thanks,<br>
 <p>Hack the Cloud Team!</p>
 '''
+hashed = keyHash('Cappillen Lee', 'Co-Director', 'HackTheCloud')
+created = f'https://certificate.hackthefog.com/?name=Cappillen Lee&role=Co-Director&type=HacktheCloud&key={hashed}'
 
 for recieverEmail in emails:
 
@@ -219,8 +247,8 @@ for recieverEmail in emails:
     msg['From'] = f'Hack the Cloud <{senderEmail}>'
     msg['To'] = recieverEmail
     msg['Subject'] = 'Hack the Cloud submissions due soon!'
-    part1 = MIMEText(reminderEventMessage, 'plain')
-    part2 = MIMEText(reminderEventMessage, 'html')
+    part1 = MIMEText(f'url: {created}', 'plain')
+    part2 = MIMEText(f'<p>url: {created}</p>', 'html')
     msg.attach(part1)
     msg.attach(part2)
     message = msg.as_string()
