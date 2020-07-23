@@ -1,16 +1,17 @@
 import csv
-from config import dataFile, appPassword, senderEmail
+# from config import dataFile, appPassword, senderEmail
 from smtplib import SMTP
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from time import sleep as delay
 import numpy as np
 import os
+import requests
 
 salt = os.environ.get('certkey')
 
 def keyHash(name, role, typ):
-    params = ['name', name, 'role', role, 'type', typ + salt]
+    params = ['name', name, 'role', role, 'type', typ]
 
     def hashParam(inp):
         inp = str(inp)
@@ -242,8 +243,17 @@ reminderEventMessage = '''
 <p>Hack the Cloud Team!</p>
 '''
 
-hashed = keyHash('Cappillen Lee', 'Co-Director', 'HacktheCloud' + salt)
+hashed = keyHash('Cappillen Lee', 'Co-Director', 'HacktheCloud' + salt) # correct way to hash
+print(hashed)
 created = f'https://certificate.hackthefog.com/?name=Cappillen Lee&role=Co-Director&type=HacktheCloud&key={hashed}'
+
+name = 'Cappillen Lee'
+role = 'Co-Director'
+typ = 'HacktheCloud' # don't change must be spelled this way
+
+res = requests.get(f'https://certhasher.herokuapp.com/generate?name={name}&role={role}&type={typ}')
+url_link = res.text
+print(res.text)
 
 for recieverEmail in emails:
 
