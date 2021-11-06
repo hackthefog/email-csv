@@ -1,107 +1,83 @@
 import csv
-from config import *
+#from config import *
 from smtplib import SMTP
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from time import sleep as delay
-import numpy as np
 import requests
+
+senderEmail = "raf@hackthefog.com"
+appPassword = "cemcfscsrmrosqjb"
 
 people = []
 
-with open('/' + dataFile) as csv_file:
+with open('output.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
 
     line_count = 0
     for row in csv_reader:
-        if row[1] != 'INELLIG' and row[6] == 'Yes':
-            person = {
-                      'name':row[2] + ' ' + row[3],
-                      'email':row[4]
-                     }
-            people.append(person)
+        person = {
+                  'name':row[0] + ' ' + row[1],
+                  'email':row[3],
+                  'link':row[4]
+                 }
+        people.append(person)
         line_count += 1
     print(f'Processed {line_count} lines.')
 
-for person in people:
-    print(person)
+#for person in people:
+#    print(person)
 
 for person in people:
-
+    link = person['link']
     name = person['name']
-    role = 'Attendee'
-    res = requests.get(f'https://certhasher.herokuapp.com/generate?name={name}&role={role}&type={typ}')
-    link = res.text
-    print(link)
 
     messageText = f'''
-Hello Hackers!
+Hello {name}!
 
-Thank you for attending Hack the Cloud! We hope you all enjoyed your time and had fun making things.
+Thank you for attending Hack the Cloud 2.0! We hope you enjoyed your time at our event.
 
-We ended up with 242 sign-ups and 46 project submissions. The work you all have done is amazing and the team appreciates the creative thinking you have brought to Hack the Cloud.  
+We ended up with 281 sign-ups and 52 project submissions. The work you have done is amazing and the team appreciates the creative thinking you have brought to Hack the Cloud 2.0.  
 
-For attending we have created an attendee certificate. If you won you will receive a separate email with more details and a different certificate. Here is your link: {link}
+For attending we have created an attendee certificate. If you won your certificate will include your placement. Here is your link: {link}
 If this link creates a certificate with the wrong name or there are any problems feel free to email me and we can fix the issue.
 
-Here are the winners of Hack the Cloud:
+All projects can be found at this link: https://htc2.devpost.com/project-gallery
 
-1st Place: FamJam by Judy Wu, Bonnie Chin, Kailey Chen and Grace Gao
-2nd Place: Astr by Alex Wan
-3rd Place: exARcise by Nathan Dimmer
-Beginner Prize: Liveify by Alexis Fry and Henry Bloom
+And if you're interested in general programming courses and your in the San Francisco Bay Area check out our partner https://missionbit.org.
 
-All projects can be found at this link: https://hack-the-cloud.devpost.com/submissions
-
-If you are interested in learning more about Data Science check out Big Data at Berkeley: https://forms.gle/fEEDq2p3J8Xateuk7!
-
-And if you're interested in general programming courses check out https://missionbit.org.
-
-And if you're interested in publishing your project our partners have a publishing service: https://mindsparkintl.co/submit.html.
-
-We hope you all stay safe.
+We hope you all stay safe during the pandemic and continue your great work in CS.
 
 Thanks,
-Hack the Fog Team and MissionBit Student Advisory Board.
+Hack the Cloud Team
 https://hackthefog.com
     '''
 
     messageHtml = f'''
-<p>Hello Hackers!</p>
+<p>Hello {name}</p>
 
-<p>Thank you for attending Hack the Cloud! We hope you all enjoyed your time and had fun making things.</p>
+<p>Thank you for attending Hack the Cloud 2.0! We hope you enjoyed your time at our event.</p>
 
-<p>We ended up with 242 sign-ups and 46 project submissions. The work you all have done is amazing and the team appreciates the creative thinking you have brought to Hack the Cloud.</p>
+<p>We ended up with 281 sign-ups and 52 project submissions. The work you have done is amazing and the team appreciates the creative thinking you have brought to Hack the Cloud 2.0.</p>
 
-<p>For attending we have created an attendee certificate. If you won you will receive a separate email with more details and a different certificate. Here is your link: <a href="{link}" target="_blank" rel="noopener">{link}</a><br>
+<p>For attending we have created an attendee certificate. If you won your certificate will include your placement. Here is your link: <a href="{link}" target="_blank" rel="noopener">{link}</a><br>
 If this link creates a certificate with the wrong name or there are any problems feel free to email me and we can fix the issue.</p>
 
-Here are the winners of Hack the Cloud:</p>
+<p>All projects can be found at this link: <a href="https://htc2.devpost.com/project-gallery" target="_blank" rel="noopener">https://htc2.devpost.com/project-gallery</a>.</p>
 
-<p>1st Place: FamJam by Judy Wu, Bonnie Chin, Kailey Chen and Grace Gao<br>
-2nd Place: Astr by Alex Wan<br>
-3rd Place: exARcise by Nathan Dimmer<br>
-Beginner Prize: Liveify by Alexis Fry and Henry Bloom</p>
+<p>If you're interested in general programming courses and your in the San Francisco Bay Area check out our partner <a href="https://missionbig.org" target="_blank" rel="noopener">https://missionbit.org</a>.</p>
 
-<p>All projects can be found at this link: <a href="https://hack-the-cloud.devpost.com/submissions" target="_blank" rel="noopener">https://hack-the-cloud.devpost.com/submissions</a>.</p>
-
-<p>If you are interested in learning more about Data Science check out Big Data at Berkeley: <a href="https://forms.gle/fEEDq2p3J8Xateuk7" target="_blank" rel="noopener">https://forms.gle/fEEDq2p3J8Xateuk7</a>!</p>
-
-<p>And if you're interested in general programming courses check out <a href="https://missionbig.org" target="_blank" rel="noopener">https://missionbit.org</a>.</p>
-
-<p>And if you're interested in publishing your project our partners have a publishing service: <a rel="noopener" target="_blank" href="https://mindsparkintl.co/submit.html">https://mindsparkintl.co/submit.html</a>.</p>
-
-<p>We hope you all stay safe.</p>
+<p>We hope you all stay safe during the pandemic and continue your great work in CS.</p>
 
 <p>Thanks,<br>
-Hack the Fog Team and MissionBit Student Advisory Board.<br>
+Hack the Cloud Team<br>
 <a href="https://hackthefog.com" target="_blank" rel="noopener">https://hackthefog.com</a></p>
     '''
 
     msg = MIMEMultipart('alternative')
     msg['From'] = f'Hack the Cloud <{senderEmail}>'
     msg['To'] = person['email']
-    msg['Subject'] = 'Thank you for attending Hack the Cloud!'
+    msg['Subject'] = 'Thank you for attending Hack the Cloud 2.0!'
     part1 = MIMEText(messageText, 'plain')
     part2 = MIMEText(messageHtml, 'html')
     msg.attach(part1)
