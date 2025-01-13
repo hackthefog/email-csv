@@ -6,8 +6,8 @@ from email.mime.multipart import MIMEMultipart
 from time import sleep as delay
 import requests
 
-senderEmail = "raf@hackthefog.com"
-appPassword = "cemcfscsrmrosqjb"
+senderEmail = "email"
+appPassword = "apppassword"
 
 people = []
 
